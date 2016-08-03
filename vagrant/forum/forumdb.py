@@ -3,6 +3,7 @@
 # 
 
 import time
+import psycopg2
 
 def GetAllPosts():
     '''Get all the posts from the database, sorted with the newest first.
@@ -31,7 +32,8 @@ def AddPost(content):
     '''
     DB = psycopg2.connect("dbname=forum") 
     c = DB.cursor()
-    command = "INSERT INTO posts (content) VALUES ('%s')" % content
-    c.execute(command)
+    sql = "INSERT INTO posts (content) VALUES (%s)"
+    data = (content,)
+    c.execute(sql, data)
     DB.commit()
     DB.close()
